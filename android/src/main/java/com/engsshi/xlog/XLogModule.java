@@ -38,7 +38,7 @@ public class XLogModule extends ReactContextBaseJavaModule implements LifecycleE
 
     private static void init(XLogSetting setting, Context context) {
         // https://github.com/Tencent/mars#android
-        System.loadLibrary("stlport_shared");
+        System.loadLibrary("c++_shared");
         System.loadLibrary("marsxlog");
         sXLogSetting = setting;
         Log.setLogImp(new Xlog());
@@ -64,7 +64,7 @@ public class XLogModule extends ReactContextBaseJavaModule implements LifecycleE
                 sXLogSetting.getAppenderMode(),
                 sXLogSetting.getCacheDir(),
                 sXLogSetting.getPath(),
-                sXLogSetting.getNamePrefix());
+                sXLogSetting.getNamePrefix(),0,"");
         Xlog.setConsoleLogOpen(sXLogSetting.isOpenConsoleLog());
 
         sIsLogOpen = true;

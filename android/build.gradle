@@ -24,10 +24,10 @@ android {
         jniLibs.srcDirs 'src/main/libs'
     }
 
-    copy {
-        from "build/intermediates/exploded-aar/com.tencent.mars/mars-xlog/${MARS_XLOG_VERSION_NAME}${MARS_XLOG_VERSION_NAME_SUFFIX}/jni/armeabi/"
-        into "src/main/libs/armeabi-v7a"
-    }
+//    copy {
+//        from "build/intermediates/exploded-aar/com.tencent.mars/mars-xlog/${MARS_XLOG_VERSION_NAME}${MARS_XLOG_VERSION_NAME_SUFFIX}/jni/armeabi/"
+//        into "src/main/libs/armeabi-v7a"
+//    }
 }
 
 dependencies {
