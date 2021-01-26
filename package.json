@@ -14,7 +14,6 @@
   },
   "files": [
     "android",
-    "ios",
     "index.js",
     "README.md"
   ],
