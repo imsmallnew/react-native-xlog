@@ -36,6 +36,10 @@
  close xlog use XLogBridge
  */
 + (void)close;
+/**
+ write into the log file 
+ */
++ (void)flushSync;
 
 
 #pragma mark - handle crash log

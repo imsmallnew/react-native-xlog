@@ -73,6 +73,9 @@ static __strong NSString *nameprefix = @"Test";
 + (void)close {
     mars::xlog::appender_close();
 }
++ (void)flushSync {
+    mars::xlog::appender_flush_sync();
+}
 + (BOOL)requiresMainQueueSetup
 
 {
@@ -205,5 +208,15 @@ RCT_EXPORT_METHOD(uninstallUncaughtCrashHandler
     resolve(nil);
   }
 }
+
+RCT_EXPORT_METHOD(flushSync
+                  :(RCTPromiseResolveBlock)resolve
+                  :(RCTPromiseRejectBlock)reject) {
+  [XLogBridge flushSync];
+  if (resolve) {
+    resolve(nil);
+  }
+}
+
 
 @end

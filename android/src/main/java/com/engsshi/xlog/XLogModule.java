@@ -69,6 +69,13 @@ public class XLogModule extends ReactContextBaseJavaModule implements LifecycleE
 
         sIsLogOpen = true;
     }
+  /**
+     * turn off log
+     */
+    @ReactMethod
+    public static void flushSync() {
+        Log.appenderFlush(true);
+    }
 
     /**
      * turn off log
