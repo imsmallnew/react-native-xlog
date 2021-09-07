@@ -28,6 +28,10 @@ const open = async (): void => {
 const close = async (): void => {
   return await XLogBridge.close();
 }
+//
+const flushSync = async (): void => {
+  return await XLogBridge.flushSync();
+}
 
 const installUncaughtCrashHandler = async (): void => {
   if (!XLogBridge.installUncaughtCrashHandler) {
@@ -72,10 +76,10 @@ const fatal = async (tag: string, log: string): void => {
 module.exports = {
   open,
   close,
-
+  flushSync,
   installUncaughtCrashHandler,
   uninstallUncaughtCrashHandler,
-  
+
   verbose,
   debug,
   info,
