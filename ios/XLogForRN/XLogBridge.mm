@@ -38,7 +38,7 @@ static __strong NSString *nameprefix = @"Test";
 #pragma mark - register xlog setting
 
 + (void)registerWithLogPath:(NSString *)_logPath level:(TLogLevel)_level showConsoleLog:(BOOL)_showConsoleLog appenderMode:(mars::xlog::TAppenderMode)_mode nameprefix:(NSString *)_nameprefix {
-  
+
   logPath = _logPath;
   level = _level;
   showConsoleLog = _showConsoleLog;
@@ -52,6 +52,8 @@ static __strong NSString *nameprefix = @"Test";
   u_int8_t attrValue = 1;
   setxattr([logPath UTF8String], attrName, &attrValue, sizeof(attrValue), 0, 0);
 
+  NSString *cachePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/logcache"];
+
   // init xlog
     xlogger_SetLevel(level);
     mars::xlog::appender_set_console_log(showConsoleLog);
@@ -62,10 +64,10 @@ static __strong NSString *nameprefix = @"Test";
     config.pub_key_ = "";
     config.compress_mode_ = mars::xlog::kZlib;
     config.compress_level_ = 0;
-    config.cachedir_ = "";
-    config.cache_days_ = 10;
+    config.cachedir_ = [cachePath UTF8String];
+    config.cache_days_ = 0;
     appender_open(config);
-  
+
 }
 
 + (void)close {
@@ -116,7 +118,7 @@ return YES;
                       NSString *fileName,
                       NSNumber *lineNumber,
                       NSString *message) {
-    
+
     TLogLevel tLogLevel = kLevelAll;
     switch (level) {
       case RCTLogLevelTrace:
@@ -134,14 +136,14 @@ return YES;
       case RCTLogLevelFatal:
         tLogLevel = kLevelFatal;
         break;
-        
+
       default:
         tLogLevel = kLevelNone;
         break;
     }
-    
+
     NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
-    
+
     LOG_MESSAGE((TLogLevel)tLogLevel, "log", log);
   });
 }
@@ -153,7 +155,7 @@ RCT_EXPORT_METHOD(open
                   :(RCTPromiseResolveBlock)resolve
                   :(RCTPromiseRejectBlock)reject) {
   [XLogBridge open];
-  
+
   if (resolve) {
     resolve(nil);
   }
@@ -163,7 +165,7 @@ RCT_EXPORT_METHOD(close
                   :(RCTPromiseResolveBlock)resolve
                   :(RCTPromiseRejectBlock)reject) {
   [XLogBridge close];
-  
+
   if (resolve) {
     resolve(nil);
   }
@@ -174,9 +176,9 @@ RCT_EXPORT_METHOD(log:(int)level
                   :(NSString *)log
                   :(RCTPromiseResolveBlock)resolve
                   :(RCTPromiseRejectBlock)reject) {
-  
+
   LOG_MESSAGE((TLogLevel)level, [tag UTF8String], log);
-  
+
   if (resolve) {
     resolve(nil);
   }
@@ -185,9 +187,9 @@ RCT_EXPORT_METHOD(log:(int)level
 RCT_EXPORT_METHOD(installUncaughtCrashHandler
                   :(RCTPromiseResolveBlock)resolve
                   :(RCTPromiseRejectBlock)reject) {
-  
+
   [[self class] installUncaughtCrashHandler:nil];
-  
+
   if (resolve) {
     resolve(nil);
   }
@@ -196,9 +198,9 @@ RCT_EXPORT_METHOD(installUncaughtCrashHandler
 RCT_EXPORT_METHOD(uninstallUncaughtCrashHandler
                   :(RCTPromiseResolveBlock)resolve
                   :(RCTPromiseRejectBlock)reject) {
-  
+
   [[self class] uninstallUncaughtCrashHandler];
-  
+
   if (resolve) {
     resolve(nil);
   }
